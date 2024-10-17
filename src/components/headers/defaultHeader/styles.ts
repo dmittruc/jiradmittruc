@@ -1,13 +1,18 @@
 import {StyleSheet} from 'react-native';
-import { Colors } from '../../../theme/colors';
+import {Colors} from '../../../theme/colors';
 
 const styles = StyleSheet.create({
-  SafeAreaView: {
+  safeAreaView: {
     backgroundColor: Colors.deepWater,
   },
   container: {
-   backgroundColor: Colors.deepWater,
-   marginBottom: 70,
+    marginBottom: 70,
+  },
+  greetingText: {
+    padding: 15,
+    color: 'white',
+    alignItems: 'center',
+    fontSize: 30,
   },
 });
 export default styles;

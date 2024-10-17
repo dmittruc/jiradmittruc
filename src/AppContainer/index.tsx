@@ -1,10 +1,8 @@
 import React from 'react';
-import Header from '../components/headers/defaultHeader';
+import SignUpScreen from '@screens/SignUpScreen';
 
 const AppContainer = () => {
-  return (
-    <Header/>
-  );
+  return <SignUpScreen />;
 };
 
 export default AppContainer;

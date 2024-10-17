@@ -1,14 +1,15 @@
-import { SafeAreaView, Text, View } from "react-native"
-import styles from "./styles"
+/* eslint-disable react/react-in-jsx-scope */
+import {SafeAreaView, Text, View} from 'react-native';
+import styles from './styles';
 
-const Header = () => {
-    return (
-        <SafeAreaView style={styles.SafeAreaView}>
-            <View style={styles.container}>
-                <Text>Header</Text>
-            </View>
-        </SafeAreaView>
-    )
-}
+const DefaultHeader = () => {
+  return (
+    <SafeAreaView style={styles.safeAreaView}>
+      <View style={styles.container}>
+        <Text style={styles.greetingText}>hello jiruha!</Text>
+      </View>
+    </SafeAreaView>
+  );
+};
 
-export default Header
+export default DefaultHeader;
