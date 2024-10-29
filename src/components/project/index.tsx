@@ -1,6 +1,7 @@
 import {Text, View} from 'react-native';
 import DefaultButton from '../button';
 import styles from './styles';
+import React from 'react';
 
 interface ProjectProps {
   title: string;

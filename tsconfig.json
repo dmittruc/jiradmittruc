@@ -12,6 +12,7 @@
       "@theme/*": ["src/theme/*"],
       "@contexts/*": ["src/contexts/*"],
       "@hooks/*": ["src/hooks/*"],
+      "@api/*": ["src/api/*"],
       "@store": ["src/store"]
     }
   }

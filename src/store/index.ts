@@ -10,10 +10,9 @@ const store = configureStore({
     }),
 });
 
-const persistor = persistStore(store);
+export type TRootState = ReturnType<typeof store.getState>;
+export type TAppDispatch = typeof store.dispatch;
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export const persistor = persistStore(store);
+
 export default store;
-
-export {persistor, store};
