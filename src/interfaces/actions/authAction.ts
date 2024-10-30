@@ -1,13 +1,7 @@
-import {EUserRole} from '@interfaces/general';
-
 export interface ISetAccessTokenAction {
-  accessToken: string | null;
+  accessToken: string | undefined;
 }
 
-export interface ISignUpAsyncAction {
-  email: string;
-  password: string;
-  name: string;
-  repeatPassword: string;
-  role: EUserRole;
+export interface ISetLoadingAction {
+  loading: boolean;
 }

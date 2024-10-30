@@ -4,17 +4,22 @@ import {AuthStackParamList} from '@interfaces/navigation/routeParams';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SignUpScreen from '@screens/SignUpScreen';
 import {defaultScreenOptions} from './constants';
+import SignInScreen from '@screens/SignInScreen';
 
-const AuthSTack = createNativeStackNavigator<AuthStackParamList>();
+const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 
 const AuthNavigator = () => {
   return (
-    <AuthSTack.Navigator screenOptions={defaultScreenOptions}>
-      <AuthSTack.Screen
+    <AuthStack.Navigator screenOptions={defaultScreenOptions}>
+      <AuthStack.Screen
         name={ERoutesNames.SIGN_UP_SCREEN}
         component={SignUpScreen}
       />
-    </AuthSTack.Navigator>
+      <AuthStack.Screen
+        name={ERoutesNames.SIGN_IN_SCREEN}
+        component={SignInScreen}
+      />
+    </AuthStack.Navigator>
   );
 };
 

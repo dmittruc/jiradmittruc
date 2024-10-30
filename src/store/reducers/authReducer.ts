@@ -1,21 +1,16 @@
-import {createReducer, PayloadAction} from '@reduxjs/toolkit';
+import {createReducer} from '@reduxjs/toolkit';
 import {IAuthReducerState} from '@interfaces/reducers/authReducer';
 import {setAccessTokenAction} from '@actions/authAction';
 
 const initialState: IAuthReducerState = {
-  accessToken: null,
+  accessToken: undefined,
 };
 
 const authReducer = createReducer<IAuthReducerState>(initialState, builder =>
-  builder.addCase(
-    setAccessTokenAction,
-    (store, action: PayloadAction<string>) => {
-      return {
-        ...store,
-        accessToken: action.payload,
-      };
-    },
-  ),
+  builder.addCase(setAccessTokenAction, (store, {payload: {accessToken}}) => ({
+    ...store,
+    accessToken: accessToken,
+  })),
 );
 
 export default authReducer;

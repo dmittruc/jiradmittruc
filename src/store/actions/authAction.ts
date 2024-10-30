@@ -1,24 +1,63 @@
-import {registerUserApi} from '@api/auth';
+import {signInApi, signUpApi} from '@api/auth';
 import {
   ISetAccessTokenAction,
-  ISignUpAsyncAction,
+  ISetLoadingAction,
 } from '@interfaces/actions/authAction';
+import {TUserRole} from '@interfaces/general';
 import {createAction, createAsyncThunk} from '@reduxjs/toolkit';
 import {Alert} from 'react-native';
+
+export interface ISignInParams {
+  email: string;
+  password: string;
+}
+
+export interface ISignUpParams {
+  email: string;
+  name: string;
+  password: string;
+  repeatPassword: string;
+  role: TUserRole;
+  onSuccess: () => void;
+}
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,32}$/;
 const nameRegex = /^[A-Za-z]{2,32}$/;
 
 export const setAccessTokenAction = createAction<ISetAccessTokenAction>(
-  'setAccessTokenAction',
+  'auth/setAccessTokenAction',
+);
+
+export const setLoadingAction = createAction<ISetLoadingAction>(
+  'auth/setLoadingAction',
+);
+
+export const signInAsyncAction = createAsyncThunk(
+  'auth/signInAsyncAction',
+  async ({email, password}: ISignInParams, {getState, dispatch}) => {
+    try {
+      console.log('try sign in post');
+      dispatch(setLoadingAction({loading: true}));
+      const res = await signInApi(email, password);
+      if (res.token) {
+        dispatch(setAccessTokenAction({accessToken: res.token}));
+      }
+      console.log({token: res.token});
+    } catch (e: any) {
+      console.error('Error registering user:', e);
+      Alert.alert('Sign in failed');
+    } finally {
+      dispatch(setLoadingAction({loading: false}));
+    }
+  },
 );
 
 export const signUpAsyncAction = createAsyncThunk(
-  'signUpAsyncAction',
+  'auth/signUpAsyncAction',
   async (
-    {email, password, repeatPassword, name, role}: ISignUpAsyncAction,
-    {dispatch},
+    {email, name, password, repeatPassword, role, onSuccess}: ISignUpParams,
+    {getState, dispatch},
   ) => {
     if (!emailRegex.test(email)) {
       Alert.alert('Invalid email');
@@ -45,17 +84,20 @@ export const signUpAsyncAction = createAsyncThunk(
     console.log('All validation passed');
 
     try {
-      console.log('try');
-      const response = await registerUserApi(email, password, name, role);
-      console.log('RES =>', response?.token);
-      if (response.token) {
-        console.log('Token received:', response?.token);
-        dispatch(setAccessTokenAction(response?.token));
+      console.log('try sign up post');
+      const res = await signUpApi(email, password, name, role);
+      if (res.token) {
+        dispatch(setAccessTokenAction({accessToken: res.token}));
       }
-      console.log('User registered successfully:', response);
-    } catch (error) {
-      console.error('Error registering user:', error);
-      Alert.alert('Registration failed');
+      console.log({token: res.token});
+      if (onSuccess) {
+        onSuccess();
+      }
+    } catch (e: any) {
+      console.error('Error registering user:', e);
+      Alert.alert('Sign up failed');
+    } finally {
+      dispatch(setLoadingAction({loading: false}));
     }
   },
 );

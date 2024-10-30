@@ -5,8 +5,10 @@ import CheckBox from '@react-native-community/checkbox';
 import styles from './styles';
 import {useDispatch} from 'react-redux';
 import {signUpAsyncAction} from '@actions/authAction';
-import {AppDispatch} from '@store';
-import {EUserRole} from '@interfaces/general';
+import {TAppDispatch} from '@store';
+import {TUserRole} from '@interfaces/general';
+import {ERoutesNames} from '@interfaces/navigation/routeNames';
+import {useNavigation} from '@react-navigation/native';
 
 const SignUpScreen = () => {
   const [email, setEmail] = useState('');
@@ -14,14 +16,29 @@ const SignUpScreen = () => {
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
 
-  const [isSelected, setSelection] = useState(false);
-
-  const dispatch = useDispatch<AppDispatch>();
+  const [isAdmin, setIsAdmin] = React.useState<boolean>(false);
+  const dispatch = useDispatch<TAppDispatch>();
+  const navigation = useNavigation<any>();
 
   const handleSignUp = React.useCallback(() => {
-    const role = isSelected ? EUserRole.ADMIN : EUserRole.USER;
-    dispatch(signUpAsyncAction({email, name, password, repeatPassword, role}));
-  }, [dispatch, email, name, password, repeatPassword, isSelected]);
+    const role: TUserRole = isAdmin ? 'ADMIN' : 'USER';
+    dispatch(
+      signUpAsyncAction({
+        email: email,
+        name: name,
+        password: password,
+        repeatPassword: repeatPassword,
+        role: role,
+        onSuccess: function (): void {
+          throw new Error('Function not implemented.');
+        },
+      }),
+    );
+  }, [dispatch, email, name, password, repeatPassword, isAdmin]);
+
+  const handleGoToSignInScreen = () => {
+    navigation.navigate(ERoutesNames.SIGN_IN_SCREEN);
+  };
 
   return (
     <SafeAreaView style={styles.allScreen}>
@@ -53,8 +70,14 @@ const SignUpScreen = () => {
         secureTextEntry={true}
       />
       <Text>Sign up as Admin</Text>
-      <CheckBox value={isSelected} onValueChange={setSelection} />
+      <CheckBox
+        value={isAdmin}
+        onValueChange={() => {
+          setIsAdmin(!isAdmin);
+        }}
+      />
       <Button title="sign up" onPress={handleSignUp} />
+      <Button title="go to sign in" onPress={handleGoToSignInScreen} />
     </SafeAreaView>
   );
 };

@@ -1,4 +1,1 @@
-export enum EUserRole {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
-}
+export type TUserRole = 'ADMIN' | 'USER';
