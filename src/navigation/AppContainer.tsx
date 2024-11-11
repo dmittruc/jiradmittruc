@@ -13,7 +13,7 @@ const AppContainer = () => {
 
   return (
     <NavigationContainer>
-      {!accessToken ? <AuthNavigator /> : <AppNavigator />}
+      <AppNavigator />
     </NavigationContainer>
   );
 };

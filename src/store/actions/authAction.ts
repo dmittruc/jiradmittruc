@@ -1,15 +1,16 @@
-import {signInApi, signUpApi} from '@api/auth';
+import {signInApi, signUpApi} from '@api/authApi';
 import {
   ISetAccessTokenAction,
   ISetLoadingAction,
 } from '@interfaces/actions/authAction';
-import {TUserRole} from '@interfaces/general';
+import {TUserRole} from '@interfaces/index';
 import {createAction, createAsyncThunk} from '@reduxjs/toolkit';
 import {Alert} from 'react-native';
 
 export interface ISignInParams {
   email: string;
   password: string;
+  onSuccess: () => void;
 }
 
 export interface ISignUpParams {
@@ -35,7 +36,7 @@ export const setLoadingAction = createAction<ISetLoadingAction>(
 
 export const signInAsyncAction = createAsyncThunk(
   'auth/signInAsyncAction',
-  async ({email, password}: ISignInParams, {getState, dispatch}) => {
+  async ({email, password, onSuccess}: ISignInParams, {getState, dispatch}) => {
     try {
       console.log('try sign in post');
       dispatch(setLoadingAction({loading: true}));
@@ -44,6 +45,9 @@ export const signInAsyncAction = createAsyncThunk(
         dispatch(setAccessTokenAction({accessToken: res.token}));
       }
       console.log({token: res.token});
+      if (onSuccess) {
+        onSuccess();
+      }
     } catch (e: any) {
       console.error('Error registering user:', e);
       Alert.alert('Sign in failed');

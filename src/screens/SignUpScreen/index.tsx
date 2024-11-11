@@ -6,7 +6,7 @@ import styles from './styles';
 import {useDispatch} from 'react-redux';
 import {signUpAsyncAction} from '@actions/authAction';
 import {TAppDispatch} from '@store';
-import {TUserRole} from '@interfaces/general';
+import {TUserRole} from '@interfaces/index';
 import {ERoutesNames} from '@interfaces/navigation/routeNames';
 import {useNavigation} from '@react-navigation/native';
 
@@ -20,6 +20,10 @@ const SignUpScreen = () => {
   const dispatch = useDispatch<TAppDispatch>();
   const navigation = useNavigation<any>();
 
+  const goToProjects = React.useCallback(() => {
+    navigation.navigate(ERoutesNames.PROJECTS_SCREEN);
+  }, [navigation]);
+
   const handleSignUp = React.useCallback(() => {
     const role: TUserRole = isAdmin ? 'ADMIN' : 'USER';
     dispatch(
@@ -29,12 +33,10 @@ const SignUpScreen = () => {
         password: password,
         repeatPassword: repeatPassword,
         role: role,
-        onSuccess: function (): void {
-          throw new Error('Function not implemented.');
-        },
+        onSuccess: goToProjects,
       }),
     );
-  }, [dispatch, email, name, password, repeatPassword, isAdmin]);
+  }, [dispatch, email, name, password, repeatPassword, isAdmin, goToProjects]);
 
   const handleGoToSignInScreen = () => {
     navigation.navigate(ERoutesNames.SIGN_IN_SCREEN);

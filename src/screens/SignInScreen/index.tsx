@@ -5,6 +5,8 @@ import {useDispatch} from 'react-redux';
 import {signInAsyncAction} from '@actions/authAction';
 import {TAppDispatch} from '@store';
 import styles from './styles';
+import {ERoutesNames} from '@interfaces/navigation/routeNames';
+import {useNavigation} from '@react-navigation/native';
 
 const SignInScreen = () => {
   const [email, setEmail] = useState('');
@@ -12,14 +14,21 @@ const SignInScreen = () => {
 
   const dispatch = useDispatch<TAppDispatch>();
 
-  const handleSignIn = React.useCallback(() => {
+  const navigation = useNavigation<any>();
+
+  const goToProjects = () => {
+    navigation.navigate(ERoutesNames.PROJECTS_SCREEN);
+  };
+
+  const handleSignIn = () => {
     dispatch(
       signInAsyncAction({
         email: email,
         password: password,
+        onSuccess: goToProjects,
       }),
     );
-  }, [dispatch, email, password]);
+  };
 
   return (
     <View style={styles.allScreen}>

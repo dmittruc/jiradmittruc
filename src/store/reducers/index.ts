@@ -1,21 +1,18 @@
 import {combineReducers} from '@reduxjs/toolkit';
 import {persistReducer} from 'redux-persist';
 import authReducer from './authReducer';
-import MMKVStorage from 'react-native-mmkv-storage';
+import projectReducer from './projectsReducer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const MMKV = new MMKVStorage.Loader().initialize();
-
-const authPersistConfig = {
-  key: 'auth',
-  storage: {
-    setItem: (key: string, value: string) => MMKV.setStringAsync(key, value),
-    getItem: (key: string) => MMKV.getStringAsync(key),
-    removeItem: (key: string) => MMKV.removeItem(key),
-  },
+const PersistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+  whitelist: ['auth', 'projects', 'tasks', 'statuses', 'types', 'users'],
 };
 
 const rootReducer = combineReducers({
-  auth: persistReducer(authPersistConfig, authReducer),
+  auth: authReducer,
+  projects: projectReducer,
 });
 
-export default rootReducer;
+export default persistReducer(PersistConfig, rootReducer);

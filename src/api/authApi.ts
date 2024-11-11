@@ -1,5 +1,5 @@
-import {TUserRole} from '@interfaces/general';
-import axiosInstance from '../axios';
+import {TUserRole} from '@interfaces/index';
+import axiosInstance from './axios';
 
 export const signInApi = async (email: string, password: string) => {
   console.log('sign in post');
